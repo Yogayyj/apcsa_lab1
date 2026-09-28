@@ -8,17 +8,17 @@ A build-free, GitHub Pages-ready AP Computer Science A lab about classes, object
 2. Complete the four challenges in order. Every challenge uses the same cumulative `Main.java`; changing challenges never replaces the code.
 3. Use **Check Answer** for concept-focused structural feedback. A challenge counts toward the score only after every check passes.
 4. Work auto-saves under `fashionLab_<StudentID>`. **Logout** preserves it; entering the same ID restores it. Different IDs have independent work.
-5. Select **Export Assignment** to download `FashionLab_StudentID_Student_Name.json` for the teacher.
+5. Select **Export Assignment** to download `FashionLab_StudentID_Student_Name.json` and automatically add/update the submission in the Teacher Dashboard when it is opened in the same browser.
 
 **Reset My Lab** permanently deletes only the signed-in student's saved code and progress after confirmation.
 
 ## Teacher workflow
 
-1. Ask students to submit their exported `.json` files.
-2. Open `teacher.html` and select or drag in one or many files.
+1. Open `teacher.html` and enter the teacher password `88888888`. Assignments exported from the Student Lab in the same browser appear automatically.
+2. For assignments from other browsers or devices, select or drag in one or many exported `.json` files.
 3. Review the class table, then select a student to inspect progress, submission time, and final `Main.java`.
 
-Files are parsed locally with browser APIs. The dashboard does not upload or retain submissions.
+Files are parsed locally with browser APIs. Dashboard submissions are retained in local storage across refreshes and browser restarts until **Clear list** is confirmed. Nothing is uploaded to a server.
 
 ## Run Code and Check Answer
 

@@ -52,6 +52,7 @@ let state = null;
 let openFile = 'main';
 let saveTimer;
 const storageKey = id => `fashionLab_${id}`;
+const teacherSubmissionsKey = 'fashionLab_teacherSubmissions';
 const cleanId = id => id.trim().replace(/\s+/g, ' ');
 const blankProgress = () => ({challenge1:false,challenge2:false,challenge3:false,challenge4:false});
 function freshState(name,id){return {student:{name,id},code:STARTER,currentChallenge:0,progress:blankProgress(),score:0,checkResults:{}};}
@@ -99,7 +100,14 @@ function withoutComments(code){
 function checkAnswer(){
   const code=withoutComments(state.code);const results=CHALLENGES[state.currentChallenge].checks.map(([label,re])=>({label,passed:re.test(code)}));const all=results.every(r=>r.passed);state.checkResults['challenge'+(state.currentChallenge+1)]={passed:all,checkedAt:new Date().toISOString(),items:results};if(all)state.progress['challenge'+(state.currentChallenge+1)]=true;save();$('feedback').innerHTML=results.map(r=>`<div class="check ${r.passed?'ok':'bad'}">${r.passed?'✓':'✗'} ${r.label}</div>`).join('')+`<div class="check ${all?'ok':'bad'}"><b>${all?'✓ Challenge complete!':'Almost there — use the required Java structure and fix the items above.'}</b></div>`;
 }
-function exportAssignment(){save();const output={version:'1.0',student:state.student,score:state.score,progress:state.progress,mainJava:state.code,checkResults:state.checkResults,submittedAt:new Date().toISOString()};const blob=new Blob([JSON.stringify(output,null,2)],{type:'application/json'});const url=URL.createObjectURL(blob);const a=document.createElement('a');const safeName=state.student.name.trim().replace(/[^a-z0-9]+/gi,'_').replace(/^_|_$/g,'');const safeId=state.student.id.replace(/[^a-z0-9_-]/gi,'_');a.href=url;a.download=`FashionLab_${safeId}_${safeName||'Student'}.json`;a.click();setTimeout(()=>URL.revokeObjectURL(url),0);}
+function saveForTeacher(output){
+  let submissions=[];
+  try{const stored=JSON.parse(localStorage.getItem(teacherSubmissionsKey));if(Array.isArray(stored))submissions=stored;}catch(_){/* replace malformed teacher data */}
+  const existing=submissions.findIndex(item=>item?.student?.id===output.student.id);
+  if(existing>=0)submissions.splice(existing,1,output);else submissions.push(output);
+  localStorage.setItem(teacherSubmissionsKey,JSON.stringify(submissions));
+}
+function exportAssignment(){save();const output={version:'1.0',student:state.student,score:state.score,progress:state.progress,mainJava:state.code,checkResults:state.checkResults,submittedAt:new Date().toISOString()};try{saveForTeacher(output);$('console').textContent='Assignment exported and added to the Teacher Dashboard on this browser.';}catch(error){$('console').textContent=`The JSON was downloaded, but could not be saved to the Teacher Dashboard: ${error.message}`;}const blob=new Blob([JSON.stringify(output,null,2)],{type:'application/json'});const url=URL.createObjectURL(blob);const a=document.createElement('a');const safeName=state.student.name.trim().replace(/[^a-z0-9]+/gi,'_').replace(/^_|_$/g,'');const safeId=state.student.id.replace(/[^a-z0-9_-]/gi,'_');a.href=url;a.download=`FashionLab_${safeId}_${safeName||'Student'}.json`;a.click();setTimeout(()=>URL.revokeObjectURL(url),0);}
 async function runCode(){const ep=(localStorage.getItem('judge0Endpoint')||'').trim();const con=$('console');if(!ep){con.textContent='Java Runner is not configured yet.\n\nYou can still use Check Answer to complete this activity.';return;}con.textContent='Compiling and running…';try{const sep=ep.includes('?')?'&':'?';const dependencies=[FASHION_ITEM,CALCULATOR].map(code=>code.replace('public class','class'));const res=await fetch(ep+sep+'base64_encoded=false&wait=true',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({source_code:[state.code,...dependencies].join('\n\n'),language_id:62,stdin:''})});if(!res.ok)throw new Error(`Runner returned HTTP ${res.status}`);const data=await res.json();con.textContent=data.stdout||data.compile_output||data.stderr||data.message||JSON.stringify(data,null,2);}catch(error){con.textContent=`Java Runner error: ${error.message}\n\nCheck the endpoint and CORS settings. Check Answer remains available.`;}}
 
 $('loginForm').addEventListener('submit',e=>{e.preventDefault();try{$('loginError').textContent='';login($('studentName').value,$('studentId').value);}catch(error){$('loginError').textContent=error.message;}});
