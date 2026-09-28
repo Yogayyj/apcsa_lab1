@@ -14,7 +14,7 @@ A build-free, GitHub Pages-ready AP Computer Science A lab about classes, object
 
 ## Teacher workflow
 
-1. Open `teacher.html`. Assignments exported from the Student Lab in the same browser appear automatically.
+1. Open `teacher.html` and enter the teacher password `88888888`. Assignments exported from the Student Lab in the same browser appear automatically.
 2. For assignments from other browsers or devices, select or drag in one or many exported `.json` files.
 3. Review the class table, then select a student to inspect progress, submission time, and final `Main.java`.
 
