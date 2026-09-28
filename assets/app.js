@@ -45,7 +45,7 @@ const CHALLENGES = [
 ────────  ──────────
  object      method</pre>`,checks:[['Instance method called on hairClip',/hairClip\s*\.\s*showInfo\s*\(\s*\)\s*;/]]},
   {title:'Static Method',subtitle:'class.method()',body:`<p>Add the hair clip and earring prices with <code>Calculator.add()</code>.</p><ul><li>Get both prices through <code>getPrice()</code>.</li><li>Store the result in <code>double total</code>.</li><li>Print <code>"Total: $" + total</code>.</li></ul><p>Do not calculate with the numbers <code>450 + 600</code> directly.</p>`,checks:[
-    ['Uses Calculator.add()',/Calculator\s*\.\s*add\s*\(/],['Uses hairClip.getPrice()',/hairClip\s*\.\s*getPrice\s*\(\s*\)/],['Uses earring.getPrice()',/earring\s*\.\s*getPrice\s*\(\s*\)/],['Passes both prices to Calculator.add()',/Calculator\s*\.\s*add\s*\(\s*hairClip\s*\.\s*getPrice\s*\(\s*\)\s*,\s*earring\s*\.\s*getPrice\s*\(\s*\)\s*\)/],['Stores result in double total',/double\s+total\s*=\s*Calculator\s*\.\s*add\s*\(/],['Prints total',/System\s*\.\s*out\s*\.\s*println\s*\(\s*"Total: \$"\s*\+\s*total\s*\)\s*;/]
+    ['Uses Calculator.add()',/Calculator\s*\.\s*add\s*\(/],['Uses hairClip.getPrice()',/hairClip\s*\.\s*getPrice\s*\(\s*\)/],['Uses earring.getPrice()',/earring\s*\.\s*getPrice\s*\(\s*\)/],['Passes both prices to Calculator.add()',/Calculator\s*\.\s*add\s*\(\s*hairClip\s*\.\s*getPrice\s*\(\s*\)\s*,\s*earring\s*\.\s*getPrice\s*\(\s*\)\s*\)/],['Stores result in double total',/double\s+total\s*=\s*Calculator\s*\.\s*add\s*\(/],['Prints total',/System\s*\.\s*out\s*\.\s*println\s*\(\s*"Total[ \t]*:[ \t]*\$"\s*\+\s*total\s*\)\s*;/]
   ]}
 ];
 
