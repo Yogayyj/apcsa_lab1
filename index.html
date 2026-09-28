@@ -1,101 +1,26 @@
 <!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Fashion Item Java Lab</title>
-<style>
-:root{--bg:#f5f3ef;--card:#fff;--ink:#1d1d1f;--muted:#6e6e73;--line:#ddd7cf;--accent:#5a4b42;--ok:#237a4b;--bad:#b33a3a;--code:#171717}
-*{box-sizing:border-box} body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--ink)}
-header{padding:22px 28px;border-bottom:1px solid var(--line);background:#fff;display:flex;justify-content:space-between;gap:20px;align-items:center} h1{font-size:22px;margin:0}.sub{color:var(--muted);font-size:13px;margin-top:4px}.badge{font-size:12px;border:1px solid var(--line);border-radius:999px;padding:7px 10px}
-main{display:grid;grid-template-columns:280px minmax(430px,1fr) 310px;min-height:calc(100vh - 83px)} aside,.work{padding:20px}.left{border-right:1px solid var(--line)}.right{border-left:1px solid var(--line)}
-.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:14px;box-shadow:0 2px 12px rgba(0,0,0,.025)} h2{font-size:15px;margin:0 0 10px}.challenge{width:100%;text-align:left;padding:11px 12px;margin:6px 0;border:1px solid var(--line);border-radius:10px;background:#fff;cursor:pointer}.challenge.active{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}.challenge small{display:block;color:var(--muted);margin-top:3px}
-.task p,.task li{font-size:14px;line-height:1.55}.task ul{padding-left:20px}.filetabs{display:flex;gap:7px;margin-bottom:9px;flex-wrap:wrap}.filetabs button,.btn{border:1px solid var(--line);background:#fff;border-radius:9px;padding:9px 12px;cursor:pointer;font-weight:600}.filetabs button.active{background:#eee9e3}.editor{width:100%;min-height:390px;background:var(--code);color:#f6f6f6;border:0;border-radius:12px;padding:16px;font:14px/1.55 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;tab-size:4;resize:vertical}.actions{display:flex;gap:9px;margin:12px 0}.btn.primary{background:var(--accent);color:#fff;border-color:var(--accent)}.btn:disabled{opacity:.5;cursor:not-allowed}.console{background:#0e0e0e;color:#d7f8df;border-radius:12px;min-height:145px;padding:14px;white-space:pre-wrap;font:13px/1.5 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}.feedback{margin-top:12px}.check{padding:9px 10px;border-radius:8px;margin:6px 0;font-size:13px;background:#f7f7f7}.ok{color:var(--ok)}.bad{color:var(--bad)} pre.api{overflow:auto;background:#f6f3ef;padding:12px;border-radius:9px;font:12px/1.5 ui-monospace,monospace}.note{font-size:12px;color:var(--muted);line-height:1.5}.status{font-size:12px;color:var(--muted);margin-left:auto}.settings input{width:100%;padding:9px;border:1px solid var(--line);border-radius:8px;margin:5px 0 8px}
-@media(max-width:1000px){main{grid-template-columns:1fr}.left,.right{border:0}.right{order:3}.work{order:2}.left{order:1}}
-</style>
-</head>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Fashion Item Java Lab</title><link rel="stylesheet" href="assets/style.css"></head>
 <body>
-<header><div><h1>Fashion Item Java Lab</h1><div class="sub">Objects • Constructors • Arguments • Instance Methods • Static Methods</div></div><div class="badge">AP Computer Science A</div></header>
-<main>
-<aside class="left">
-  <div class="card"><h2>Challenges</h2><div id="challengeList"></div></div>
-  <div class="card task"><h2 id="taskTitle"></h2><div id="taskBody"></div></div>
-</aside>
-<section class="work">
-  <div class="filetabs"><button class="active">Main.java</button><span class="status" id="saveStatus">Saved locally</span></div>
-  <textarea id="editor" class="editor" spellcheck="false"></textarea>
-  <div class="actions"><button class="btn primary" id="runBtn">▶ Run Code</button><button class="btn" id="checkBtn">✓ Check Answer</button><button class="btn" id="resetBtn">Reset</button></div>
-  <h2>Console</h2><div id="console" class="console">Ready.</div>
-  <div id="feedback" class="feedback"></div>
-</section>
-<aside class="right">
-  <div class="card"><h2>FashionItem API</h2><pre class="api">FashionItem(String brand,
-            String type,
-            double price)
+<section id="loginView" class="login-shell"><form id="loginForm" class="login-card"><div class="eyebrow">AP Computer Science A</div><h1>Welcome to Fashion Java Lab</h1><p class="muted">Enter your classroom profile. Your work stays on this device and is kept separate by Student ID.</p><label for="studentName">Name</label><input id="studentName" name="name" autocomplete="name" required maxlength="80" placeholder="Amy Zhang"><label for="studentId">Student ID</label><input id="studentId" name="id" required maxlength="40" pattern=".*\S.*" placeholder="2026001"><button class="btn primary wide" type="submit">Start Lab →</button><p id="loginError" class="error" role="alert"></p><a href="teacher.html" class="quiet-link">Open Teacher Dashboard</a></form></section>
+<div id="labView" class="hidden">
+<header class="topbar"><div><h1>Fashion Item Java Lab</h1><div class="sub">Objects · Constructors · Arguments · Methods</div></div><div class="student-tools"><span id="studentBadge" class="badge"></span><strong id="topScore">Score: 0 / 4</strong><button id="exportBtn" class="btn">Export Assignment</button><button id="logoutBtn" class="btn ghost">Logout</button></div></header>
+<main class="lab-grid"><aside class="left panel"><div class="section-label">Progress</div><div id="challengeList"></div><article class="card task"><div class="eyebrow" id="challengeNumber"></div><h2 id="taskTitle"></h2><div id="taskBody"></div></article><button id="resetBtn" class="text-button danger">Reset My Lab</button></aside>
+<section class="work panel"><div class="editor-head"><div id="fileTabs" class="filetabs"><button data-file="main" class="active">Main.java <span class="edit-dot">editable</span></button><button data-file="fashion">FashionItem.java</button><button data-file="calculator">Calculator.java</button></div><span class="save-status" id="saveStatus">Saved locally ✓</span></div><textarea id="editor" class="editor" aria-label="Java code editor" spellcheck="false"></textarea><div class="actions"><button class="btn primary" id="runBtn">▶ Run Code</button><button class="btn success" id="checkBtn">✓ Check Answer</button></div><section class="results"><div class="section-label">Console &amp; Check Results</div><div id="console" class="console" aria-live="polite">Ready. Select a challenge and build your Main.java.</div><div id="feedback" aria-live="polite"></div></section></section>
+<aside class="right panel"><div class="section-label">API Reference</div><article class="card"><h2>FashionItem</h2><h3>Constructor · parameters</h3><pre class="api">FashionItem(
+  String itemBrand,
+  String itemType,
+  double itemPrice
+)</pre><h3>Instance methods</h3><code>void showInfo()</code><br><code>double getPrice()</code></article><article class="card"><h2>Calculator</h2><h3>Static methods</h3><pre class="api">static double add(
+  double price1,
+  double price2
+)
 
-void showInfo()
-double getPrice()</pre></div>
-  <div class="card"><h2>Calculator API</h2><pre class="api">static double add(double a,
-                  double b)
+static double discount(
+  double price,
+  double discountRate
+)</pre></article><article class="card concept"><h2>Object or class?</h2><pre><b>objectName</b>.instanceMethod()
+↑ call on an OBJECT
 
-static double discount(double price,
-                       double rate)</pre></div>
-  <div class="card"><h2>Provided Files</h2><div class="filetabs"><button onclick="showFile('fashion')">FashionItem.java</button><button onclick="showFile('calculator')">Calculator.java</button></div><pre id="provided" class="api">Click a file to inspect the teacher-provided code.</pre></div>
-  <div class="card settings"><h2>Java Runner</h2><div class="note">GitHub Pages cannot compile Java by itself. Enter a Judge0-compatible endpoint to enable real execution. The answer checker still works without it.</div><input id="endpoint" placeholder="https://your-judge0-endpoint/submissions"/><button class="btn" id="saveEndpoint">Save endpoint</button></div>
-</aside>
-</main>
-<script>
-const fashion=`public class FashionItem {
-    private String brand;
-    private String type;
-    private double price;
-
-    public FashionItem(String itemBrand, String itemType, double itemPrice) {
-        brand = itemBrand;
-        type = itemType;
-        price = itemPrice;
-    }
-
-    public void showInfo() {
-        System.out.println("Brand: " + brand);
-        System.out.println("Type: " + type);
-        System.out.println("Price: $" + price);
-    }
-
-    public double getPrice() {
-        return price;
-    }
-}`;
-const calculator=`public class Calculator {
-    public static double add(double price1, double price2) {
-        return price1 + price2;
-    }
-
-    public static double discount(double price, double discountRate) {
-        return price * (1 - discountRate);
-    }
-}`;
-const starter=`public class Main {
-    public static void main(String[] args) {
-        // Write your code here
-
-    }
-}`;
-const challenges=[
- {title:'1. Create It',small:'new object + constructor',body:`<p>Create a <code>FashionItem</code> object named <b>hairClip</b>.</p><ul><li>Brand: <code>"Miu Miu"</code></li><li>Type: <code>"Hair Clip"</code></li><li>Price: <code>450</code></li></ul>`,checks:[['Created a FashionItem object',/new\s+FashionItem\s*\(/],['Variable name is hairClip',/FashionItem\s+hairClip\s*=/],['Correct constructor arguments',/new\s+FashionItem\s*\(\s*"Miu Miu"\s*,\s*"Hair Clip"\s*,\s*450(?:\.0)?\s*\)/]]},
- {title:'2. Three Objects',small:'arguments',body:`<p>Create all three objects:</p><ul><li><b>ribbon</b>: LV, Ribbon, 200</li><li><b>hairClip</b>: Miu Miu, Hair Clip, 450</li><li><b>earring</b>: LV, Earring, 600</li></ul>`,checks:[['ribbon created',/FashionItem\s+ribbon\s*=\s*new\s+FashionItem\s*\(\s*"LV"\s*,\s*"Ribbon"\s*,\s*200(?:\.0)?\s*\)/],['hairClip created',/FashionItem\s+hairClip\s*=\s*new\s+FashionItem\s*\(\s*"Miu Miu"\s*,\s*"Hair Clip"\s*,\s*450(?:\.0)?\s*\)/],['earring created',/FashionItem\s+earring\s*=\s*new\s+FashionItem\s*\(\s*"LV"\s*,\s*"Earring"\s*,\s*600(?:\.0)?\s*\)/]]},
- {title:'3. Call It',small:'instance method',body:`<p>Create <b>hairClip</b> and then call its <code>showInfo()</code> method.</p><p>Think: <b>Which object</b> is performing the method?</p>`,checks:[['hairClip object created',/FashionItem\s+hairClip\s*=\s*new\s+FashionItem/],['Instance method called on the object',/hairClip\s*\.\s*showInfo\s*\(\s*\)\s*;/]]},
- {title:'4. Checkout',small:'instance vs static method',body:`<p>Create <b>hairClip</b> ($450) and <b>earring</b> ($600).</p><ul><li>Call <code>hairClip.showInfo()</code>.</li><li>Use <code>Calculator.add(...)</code> with both objects' <code>getPrice()</code>.</li><li>Store the result in a <code>double total</code>.</li><li>Print <code>"Total: $" + total</code>.</li></ul>`,checks:[['Both objects created',/FashionItem\s+hairClip[\s\S]*FashionItem\s+earring|FashionItem\s+earring[\s\S]*FashionItem\s+hairClip/],['Instance method: hairClip.showInfo()',/hairClip\s*\.\s*showInfo\s*\(\s*\)/],['Static method: Calculator.add(...)',/Calculator\s*\.\s*add\s*\(/],['Uses both getPrice() calls',/hairClip\s*\.\s*getPrice\s*\(\s*\)[\s\S]*earring\s*\.\s*getPrice\s*\(\s*\)|earring\s*\.\s*getPrice\s*\(\s*\)[\s\S]*hairClip\s*\.\s*getPrice\s*\(\s*\)/],['Stores result in double total',/double\s+total\s*=/],['Prints total',/System\.out\.println\s*\(\s*"Total: \$"\s*\+\s*total\s*\)/]]}
-];
-let current=0; const ed=document.getElementById('editor');
-function key(){return 'fashionJavaLab_'+current}
-function render(){document.getElementById('challengeList').innerHTML=challenges.map((c,i)=>`<button class="challenge ${i===current?'active':''}" onclick="selectChallenge(${i})"><b>${c.title}</b><small>${c.small}</small></button>`).join('');document.getElementById('taskTitle').textContent=challenges[current].title;document.getElementById('taskBody').innerHTML=challenges[current].body;ed.value=localStorage.getItem(key())||starter;document.getElementById('feedback').innerHTML='';document.getElementById('console').textContent='Ready.'}
-window.selectChallenge=i=>{current=i;render()}; ed.addEventListener('input',()=>{localStorage.setItem(key(),ed.value);document.getElementById('saveStatus').textContent='Saved locally'});
-window.showFile=which=>document.getElementById('provided').textContent=which==='fashion'?fashion:calculator;
-document.getElementById('resetBtn').onclick=()=>{localStorage.removeItem(key());ed.value=starter;document.getElementById('feedback').innerHTML='';document.getElementById('console').textContent='Ready.'};
-document.getElementById('checkBtn').onclick=()=>{let all=true;const html=challenges[current].checks.map(([label,re])=>{const ok=re.test(ed.value);all&=ok;return `<div class="check ${ok?'ok':'bad'}">${ok?'✓':'✗'} ${label}</div>`}).join('');document.getElementById('feedback').innerHTML=html+`<div class="check ${all?'ok':'bad'}"><b>${all?'✓ Challenge complete':'Keep going — fix the items above.'}</b></div>`};
-const endpoint=document.getElementById('endpoint'); endpoint.value=localStorage.getItem('judge0Endpoint')||'';document.getElementById('saveEndpoint').onclick=()=>{localStorage.setItem('judge0Endpoint',endpoint.value.trim());alert('Runner endpoint saved on this browser.')};
-document.getElementById('runBtn').onclick=async()=>{const ep=(localStorage.getItem('judge0Endpoint')||'').trim();const con=document.getElementById('console');if(!ep){con.textContent='Java runner is not configured.\n\nUse “Check Answer” for structural feedback, or add a Judge0-compatible endpoint in the right panel to run real Java.';return;}con.textContent='Compiling and running…';const source=[ed.value,fashion,calculator].join('\n\n');try{const sep=ep.includes('?')?'&':'?';const res=await fetch(ep+sep+'base64_encoded=false&wait=true',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({source_code:source,language_id:62,stdin:''})});const data=await res.json();con.textContent=data.stdout||data.compile_output||data.stderr||data.message||JSON.stringify(data,null,2)}catch(e){con.textContent='Runner error: '+e.message+'\n\nIf this is a CORS error, use your own proxy/runner endpoint.'}};
-render();
-</script>
-</body></html>
+<b>ClassName</b>.staticMethod(...)
+↑ call on a CLASS</pre></article><details class="card settings"><summary>Java Runner settings</summary><p class="note">Optional Judge0-compatible submissions endpoint. Check Answer works without it.</p><label for="endpoint">Endpoint</label><input id="endpoint" placeholder="https://…/submissions"><button class="btn" id="saveEndpoint">Save endpoint</button></details></aside></main></div>
+<script src="assets/app.js"></script></body></html>
