@@ -5,9 +5,9 @@ A build-free, GitHub Pages-ready AP Computer Science A lab about classes, object
 ## Student workflow
 
 1. Open `index.html`, enter a name and Student ID, and select **Start Lab**.
-2. Choose **Lab 1 · Fashion Java Lab** from the lab selection screen. **Lab 2 · Trail Pass Java Lab** practices string parsing, substring boundaries, concatenation, and safe random indices in five cumulative checkpoints.
+2. Choose **Lab 1 · Fashion Java Lab** from the lab selection screen. **Lab 2 · Trail Pass Java Lab** practices string parsing, substring boundaries, concatenation, and safe random indices in four cumulative checkpoints.
 3. Complete the selected lab’s checkpoints in order. Every challenge uses the same cumulative `Main.java`; changing challenges never replaces the code.
-4. Use **Check Answer** for concept-focused structural feedback. A checkpoint counts toward the score only after every check passes (Lab 1: /4, Lab 2: /5).
+4. Use **Check Answer** for concept-focused structural feedback. A checkpoint counts toward the score only after every check passes (Lab 1: /4, Lab 2: /4).
 5. Work auto-saves under `fashionLab_<StudentID>` for Lab 1 and `trailLab_<StudentID>` for Lab 2. **Logout** preserves it; entering the same ID restores it. Different IDs have independent work.
 6. Select **Export Assignment** to download a lab-specific `FashionLab_StudentID_Student_Name.json` or `TrailLab_StudentID_Student_Name.json` and automatically add/update the submission in the Teacher Dashboard when it is opened in the same browser.
 
@@ -64,6 +64,6 @@ Alternatively, choose **Deploy from a branch**, select the repository's default 
 
 ## Lab 2 · Trail Pass
 
-Adapted from the supplied Unit 1 FRQ skills with a new park-kiosk scenario. Parse `trail:destination#zone` (for example `cedar:waterfall#north`) and generate full, initial-based, and random trail passes. The five checkpoints cover delimiter positions, extraction and the full pass, an initial-based pass, safe random positions, and random slices plus printing. The destination has at least three characters; the trail is nonempty. The random destination start must include every valid three-character slice, including the final one.
+Adapted from the supplied Unit 1 FRQ skills with a new park-kiosk scenario. Parse `trail:destination#zone` (for example `cedar:waterfall#north`) and generate full and initial-based trail passes, then print a random number from 1 through the trail name’s length. The four checkpoints cover delimiter positions, extraction and the full pass, an initial-based pass, and a simple length/Math.random task with a worked example. Chinese question translations appear in the left panel. Trail and destination names are nonempty. Existing five-checkpoint exports remain readable; saved student code and the first three checkpoints are preserved, while the changed fourth checkpoint must be checked again.
 
 Check Answer provides structural feedback with the task’s named variables, not compilation or proof of correctness for arbitrary Java. Code, scores, reset, exports, and teacher review are independent for each lab. Optional Run Code submits only Main.java for Lab 2.

@@ -50,7 +50,7 @@ const CHALLENGES = [
 const TRAIL_STARTER = `public class Main {
     public static void main(String[] args) {
         String route = "cedar:waterfall#north";
-        // Build your trail passes here. All five checkpoints share this file.
+        // Build your trail passes here. All four checkpoints share this file.
 
     }
 }`;
@@ -58,7 +58,7 @@ const TRAIL_STARTER = `public class Main {
 // the cumulative checkpoints explicit; values must be derived from the route.
 const trailCheck = (label, pattern) => [label, new RegExp(pattern)];
 const TRAIL_CHALLENGES = [
-  {title:'Find the Landmarks',subtitle:'indexOf · delimiter positions',body:`<p>A park kiosk receives a route tag in the format <code>trail:destination#zone</code>, for example <code>cedar:waterfall#north</code>.</p><p>Assume one <code>:</code> and one <code>#</code>, a nonempty trail name, and a destination of at least three characters.</p><p>Use <code>route.indexOf(...)</code> to store the delimiter positions in <code>int colonIndex</code> and <code>int hashIndex</code>. Derive positions rather than counting characters.</p>`,checks:[
+  {title:'Find the Landmarks',subtitle:'indexOf · delimiter positions',body:`<p>A park kiosk receives a route tag in the format <code>trail:destination#zone</code>, for example <code>cedar:waterfall#north</code>.</p><p>Assume one <code>:</code> and one <code>#</code>, a nonempty trail name, and a nonempty destination.</p><p>Use <code>route.indexOf(...)</code> to store the delimiter positions in <code>int colonIndex</code> and <code>int hashIndex</code>. Derive positions rather than counting characters.</p>`,checks:[
     ['Find : in route and store colonIndex', /int\s+colonIndex\s*=\s*route\s*\.\s*indexOf\s*\(\s*["']:["']\s*\)\s*;/],
     ['Find # in route and store hashIndex', /int\s+hashIndex\s*=\s*route\s*\.\s*indexOf\s*\(\s*["']#["']\s*\)\s*;/]
   ]},
@@ -71,17 +71,21 @@ const TRAIL_CHALLENGES = [
     ['Extract the first character with substring', /String\s+initial\s*=\s*(?:trail|route)\s*\.\s*substring\s*\(\s*0\s*,\s*1\s*\)\s*;/],
     ['Build shortPass from initial and destination', /String\s+shortPass\s*=\s*initial\s*\+\s*"-"\s*\+\s*destination\s*;/]
   ]},
-  {title:'Safe Random Positions',subtitle:'Math.random · integer ranges',body:`<p>Choose <code>int trailIndex</code> for any character in <code>trail</code>: from <code>0</code> through <code>trail.length() - 1</code>.</p><p>Choose <code>int destinationIndex</code> for the start of a three-character destination slice: from <code>0</code> through <code>destination.length() - 3</code>.</p><p>Use <code>Math.random()</code>, scale by the number of valid positions, then cast the entire product to <code>int</code>. What happens when the destination has exactly three characters?</p>`,checks:[
-    trailCheck('Choose trailIndex using all trail characters', String.raw`int\s+trailIndex\s*=\s*\(\s*int\s*\)\s*\(\s*(?:Math\s*\.\s*random\s*\(\s*\)\s*\*\s*trail\s*\.\s*length\s*\(\s*\)|trail\s*\.\s*length\s*\(\s*\)\s*\*\s*Math\s*\.\s*random\s*\(\s*\))\s*\)\s*;`),
-    trailCheck('Choose a safe destinationIndex for a three-character slice', String.raw`int\s+destinationIndex\s*=\s*\(\s*int\s*\)\s*\(\s*(?:Math\s*\.\s*random\s*\(\s*\)\s*\*\s*\(\s*destination\s*\.\s*length\s*\(\s*\)\s*-\s*2\s*\)|\(\s*destination\s*\.\s*length\s*\(\s*\)\s*-\s*2\s*\)\s*\*\s*Math\s*\.\s*random\s*\(\s*\))\s*\)\s*;`)
-  ]},
-  {title:'Mystery Trail Pass',subtitle:'random slices · combine results',body:`<p>Use your random positions to extract <code>String trailLetter</code> (one character) and <code>String destinationPart</code> (three consecutive characters).</p><p>Combine them with a hyphen in <code>String mysteryPass</code>. Possible examples include <code>d-ter</code> and <code>r-all</code> for the starter route.</p><p>Print <code>fullPass</code>, <code>shortPass</code>, and <code>mysteryPass</code> on separate lines using <code>System.out.println</code>. Keep all previous code in Main.java.</p>`,checks:[
-    ['Extract one random trail character', /String\s+trailLetter\s*=\s*trail\s*\.\s*substring\s*\(\s*trailIndex\s*,\s*trailIndex\s*\+\s*1\s*\)\s*;/],
-    ['Extract three consecutive destination characters', /String\s+destinationPart\s*=\s*destination\s*\.\s*substring\s*\(\s*destinationIndex\s*,\s*destinationIndex\s*\+\s*3\s*\)\s*;/],
-    ['Build mysteryPass from both random slices', /String\s+mysteryPass\s*=\s*trailLetter\s*\+\s*"-"\s*\+\s*destinationPart\s*;/],
-    ...['fullPass','shortPass','mysteryPass'].map(name=>trailCheck(`Print ${name}`, String.raw`System\s*\.\s*out\s*\.\s*println\s*\(\s*${name}\s*\)\s*;`))
+  {title:'Random Trail Number',subtitle:'length · Math.random',body:`<p>The park gives each visitor a random trail number. Use the length of <code>trail</code> to decide the largest possible number.</p><ol><li>Store <code>trail.length()</code> in <code>int trailLength</code>.</li><li>Create <code>int randomNumber</code> from <b>1 through trailLength</b> using <code>Math.random()</code>.</li><li>Print <code>randomNumber</code> using <code>System.out.println</code>.</li></ol><h3>Example to follow</h3><p>If the trail is <code>"river"</code>, its length is <b>5</b>:</p><pre class="api">int nameLength = "river".length();
+int ticket = (int) (Math.random() * nameLength) + 1;
+System.out.println(ticket);</pre><p>Possible outputs: <code>1</code>, <code>2</code>, <code>3</code>, <code>4</code>, or <code>5</code>. One run prints only one number.</p><p><code>Math.random()</code> gives a decimal from 0 up to (but not including) 1. Multiply by the length, use <code>(int)</code> to remove the decimal part, then add 1.</p><p>Now adapt the example using <code>trail</code>, <code>trailLength</code>, and <code>randomNumber</code>. For <code>"cedar"</code>, possible numbers are 1–5; for <code>"oak"</code>, they are 1–3.</p>`,checks:[
+    ['Store trail.length() in trailLength', /int\s+trailLength\s*=\s*trail\s*\.\s*length\s*\(\s*\)\s*;/],
+    trailCheck('Generate randomNumber from 1 through trailLength', String.raw`int\s+randomNumber\s*=\s*\(\s*int\s*\)\s*\(\s*(?:Math\s*\.\s*random\s*\(\s*\)\s*\*\s*trailLength|trailLength\s*\*\s*Math\s*\.\s*random\s*\(\s*\))\s*\)\s*\+\s*1\s*;`),
+    ['Print randomNumber', /System\s*\.\s*out\s*\.\s*println\s*\(\s*randomNumber\s*\)\s*;/]
   ]}
 ];
+const TRAIL_TRANSLATIONS = [
+  '<p>公园的路线标签格式为 <code>步道:目的地#区域</code>，例如 <code>cedar:waterfall#north</code>。</p><p>使用 <code>route.indexOf(...)</code> 找到冒号和井号的位置，分别存入整数变量 <code>colonIndex</code> 和 <code>hashIndex</code>。不要手动数位置。</p>',
+  '<p>使用 <code>route.substring(...)</code> 和上一题的位置，提取步道名 <code>trail</code> 与目的地名 <code>destination</code>。</p><p>把步道名、连字符 <code>"-"</code> 和目的地名拼接起来，存入 <code>String fullPass</code>。例如：<code>cedar-waterfall</code>；换成 <code>oak:cove#east</code> 时应得到 <code>oak-cove</code>。</p>',
+  '<p>使用 <code>substring(0, 1)</code> 提取步道名的第一个字符，存入 <code>String initial</code>。</p><p>将首字母、连字符和目的地名拼接成 <code>String shortPass</code>。例如：<code>c-waterfall</code>。注意：substring 的结束位置不包含在结果中。</p>',
+  '<p>公园要给游客一个随机的步道号码。号码范围是 <b>1 到步道名的字符数（包含两端）</b>。</p><ol><li>用 <code>trail.length()</code> 获取字符数，存入 <code>int trailLength</code>。</li><li>用 <code>Math.random()</code> 生成随机号码，存入 <code>int randomNumber</code>。</li><li>用 <code>System.out.println(randomNumber)</code> 输出号码。</li></ol><p>参考左侧英文题目的例子：<code>"river"</code> 有 5 个字符，所以一次运行可能输出 1、2、3、4 或 5 中的一个数字。先乘以长度，再用 <code>(int)</code> 去掉小数部分，最后加 1。</p><p>把例子中的变量换成题目要求的 <code>trailLength</code> 和 <code>randomNumber</code>。<code>"cedar"</code> 的范围是 1–5；<code>"oak"</code> 的范围是 1–3。</p>'
+];
+
 const LABS = {
   fashion:{title:'Fashion Item Java Lab',subtitle:'Objects · Constructors · Arguments · Methods',starter:STARTER,challenges:CHALLENGES,prefix:'FashionLab'},
   trail:{title:'Trail Pass Java Lab',subtitle:'Strings · Substrings · Random Numbers · Concatenation',starter:TRAIL_STARTER,challenges:TRAIL_CHALLENGES,prefix:'TrailLab'}
@@ -97,14 +101,17 @@ const storageKey = id => activeLab==='fashion'?`fashionLab_${id}`:`trailLab_${id
 const teacherSubmissionsKey = 'fashionLab_teacherSubmissions';
 const cleanId = id => id.trim().replace(/\s+/g, ' ');
 const blankProgress = () => Object.fromEntries(lab().challenges.map((_,i)=>['challenge'+(i+1),false]));
-function freshState(name,id){return {student:{name,id},code:lab().starter,currentChallenge:0,progress:blankProgress(),score:0,checkResults:{}};}
+function freshState(name,id){return {student:{name,id},code:lab().starter,currentChallenge:0,progress:blankProgress(),score:0,checkResults:{},curriculumVersion:activeLab==='trail'?2:1};}
 function normalizeState(value,name,id){
   const base=freshState(name,id); if(!value||typeof value!=='object')return base;
   base.student={name:name||value.student?.name||'',id};
   base.code=typeof value.code==='string'?value.code:(typeof value.mainJava==='string'?value.mainJava:lab().starter);
   base.currentChallenge=Math.min(lab().challenges.length-1,Math.max(0,Number(value.currentChallenge)||0));
   for(const key of Object.keys(base.progress))base.progress[key]=value.progress?.[key]===true; base.score=Object.values(base.progress).filter(Boolean).length;
-  base.checkResults=value.checkResults&&typeof value.checkResults==='object'?value.checkResults:{}; return base;
+  if(activeLab==='trail'&&value.curriculumVersion!==2){base.progress.challenge4=false;base.score=Object.values(base.progress).filter(Boolean).length;}
+  base.checkResults=Object.fromEntries(Object.keys(base.progress).filter(key=>value.checkResults?.[key]).map(key=>[key,value.checkResults[key]]));
+  if(activeLab==='trail'&&value.curriculumVersion!==2)delete base.checkResults.challenge4;
+  return base;
 }
 function save(){if(!state)return;state.score=Object.values(state.progress).filter(Boolean).length;localStorage.setItem(storageKey(state.student.id),JSON.stringify(state));$('saveStatus').textContent='Saved locally ✓';updateProgress();}
 function login(name,id){
@@ -131,7 +138,7 @@ function logout(){clearTimeout(saveTimer);save();state=null;sessionStorage.remov
 function updateProgress(){
   if(!state)return;$('challengeList').innerHTML=lab().challenges.map((c,i)=>`<button class="challenge ${i===state.currentChallenge?'active':''} ${state.progress['challenge'+(i+1)]?'complete':''}" data-challenge="${i}"><span class="progress-icon">${state.progress['challenge'+(i+1)]?'✓':'○'}</span><span><b>Challenge ${i+1}</b><small>${c.title}</small></span><span>›</span></button>`).join('');$('topScore').textContent=`Score: ${state.score} / ${lab().challenges.length}`;
 }
-function selectChallenge(index){state.currentChallenge=index;const c=lab().challenges[index];$('challengeNumber').textContent=`Challenge ${index+1} of ${lab().challenges.length}`;$('taskTitle').textContent=c.title;$('taskBody').innerHTML=c.body;$('feedback').innerHTML='';$('console').textContent='Ready. Continue editing the same Main.java.';save();}
+function selectChallenge(index){state.currentChallenge=index;const c=lab().challenges[index];$('challengeNumber').textContent=`Challenge ${index+1} of ${lab().challenges.length}`;$('taskTitle').textContent=c.title;$('taskBody').innerHTML=c.body;$('translationCard').classList.toggle('hidden',activeLab!=='trail');$('taskTranslation').innerHTML=activeLab==='trail'?TRAIL_TRANSLATIONS[index]:'';$('feedback').innerHTML='';$('console').textContent='Ready. Continue editing the same Main.java.';save();}
 function selectFile(file){openFile=file;document.querySelectorAll('#fileTabs button').forEach(b=>b.classList.toggle('active',b.dataset.file===file));$('editor').value=file==='main'?state.code:(file==='fashion'?FASHION_ITEM:CALCULATOR);$('editor').readOnly=file!=='main';$('saveStatus').textContent=file==='main'?'Saved locally ✓':'Teacher-provided · read only';}
 function withoutComments(code){
   let result='',mode='code';
@@ -161,7 +168,7 @@ function saveForTeacher(output){
   if(existing>=0)submissions.splice(existing,1,output);else submissions.push(output);
   localStorage.setItem(teacherSubmissionsKey,JSON.stringify(submissions));
 }
-function exportAssignment(){save();const output={version:'2.0',labId:activeLab,labTitle:lab().title,maxScore:lab().challenges.length,student:state.student,score:state.score,progress:state.progress,mainJava:state.code,checkResults:state.checkResults,submittedAt:new Date().toISOString()};try{saveForTeacher(output);$('console').textContent='Assignment exported and added to the Teacher Dashboard on this browser.';}catch(error){$('console').textContent=`The JSON was downloaded, but could not be saved to the Teacher Dashboard: ${error.message}`;}const blob=new Blob([JSON.stringify(output,null,2)],{type:'application/json'});const url=URL.createObjectURL(blob);const a=document.createElement('a');const safeName=state.student.name.trim().replace(/[^a-z0-9]+/gi,'_').replace(/^_|_$/g,'');const safeId=state.student.id.replace(/[^a-z0-9_-]/gi,'_');a.href=url;a.download=`${lab().prefix}_${safeId}_${safeName||'Student'}.json`;a.click();setTimeout(()=>URL.revokeObjectURL(url),0);}
+function exportAssignment(){save();const output={version:'2.1',curriculumVersion:state.curriculumVersion,labId:activeLab,labTitle:lab().title,maxScore:lab().challenges.length,student:state.student,score:state.score,progress:state.progress,mainJava:state.code,checkResults:state.checkResults,submittedAt:new Date().toISOString()};try{saveForTeacher(output);$('console').textContent='Assignment exported and added to the Teacher Dashboard on this browser.';}catch(error){$('console').textContent=`The JSON was downloaded, but could not be saved to the Teacher Dashboard: ${error.message}`;}const blob=new Blob([JSON.stringify(output,null,2)],{type:'application/json'});const url=URL.createObjectURL(blob);const a=document.createElement('a');const safeName=state.student.name.trim().replace(/[^a-z0-9]+/gi,'_').replace(/^_|_$/g,'');const safeId=state.student.id.replace(/[^a-z0-9_-]/gi,'_');a.href=url;a.download=`${lab().prefix}_${safeId}_${safeName||'Student'}.json`;a.click();setTimeout(()=>URL.revokeObjectURL(url),0);}
 async function runCode(){const ep=(localStorage.getItem('judge0Endpoint')||'').trim();const con=$('console');if(!ep){con.textContent='Java Runner is not configured yet.\n\nYou can still use Check Answer to complete this activity.';return;}con.textContent='Compiling and running…';try{const sep=ep.includes('?')?'&':'?';const dependencies=(activeLab==='fashion'?[FASHION_ITEM,CALCULATOR]:[]).map(code=>code.replace('public class','class'));const res=await fetch(ep+sep+'base64_encoded=false&wait=true',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({source_code:[state.code,...dependencies].join('\n\n'),language_id:62,stdin:''})});if(!res.ok)throw new Error(`Runner returned HTTP ${res.status}`);const data=await res.json();con.textContent=data.stdout||data.compile_output||data.stderr||data.message||JSON.stringify(data,null,2);}catch(error){con.textContent=`Java Runner error: ${error.message}\n\nCheck the endpoint and CORS settings. Check Answer remains available.`;}}
 
 $('loginForm').addEventListener('submit',e=>{e.preventDefault();try{$('loginError').textContent='';login($('studentName').value,$('studentId').value);}catch(error){$('loginError').textContent=error.message;}});
