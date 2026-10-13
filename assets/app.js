@@ -47,40 +47,91 @@ const CHALLENGES = [
   ]}
 ];
 
+const TRAIL_STARTER = `public class Main {
+    public static void main(String[] args) {
+        String route = "cedar:waterfall#north";
+        // Build your trail passes here. All five checkpoints share this file.
+
+    }
+}`;
+// Structural checks are feedback, not a Java compiler. Named variables make
+// the cumulative checkpoints explicit; values must be derived from the route.
+const trailCheck = (label, pattern) => [label, new RegExp(pattern)];
+const TRAIL_CHALLENGES = [
+  {title:'Find the Landmarks',subtitle:'indexOf · delimiter positions',body:`<p>A park kiosk receives a route tag in the format <code>trail:destination#zone</code>, for example <code>cedar:waterfall#north</code>.</p><p>Assume one <code>:</code> and one <code>#</code>, a nonempty trail name, and a destination of at least three characters.</p><p>Use <code>route.indexOf(...)</code> to store the delimiter positions in <code>int colonIndex</code> and <code>int hashIndex</code>. Derive positions rather than counting characters.</p>`,checks:[
+    ['Find : in route and store colonIndex', /int\s+colonIndex\s*=\s*route\s*\.\s*indexOf\s*\(\s*["']:["']\s*\)\s*;/],
+    ['Find # in route and store hashIndex', /int\s+hashIndex\s*=\s*route\s*\.\s*indexOf\s*\(\s*["']#["']\s*\)\s*;/]
+  ]},
+  {title:'Full Trail Pass',subtitle:'substring · concatenation',body:`<p>Extract <code>String trail</code> and <code>String destination</code> using your delimiter positions and <code>route.substring(...)</code>.</p><p>Create <code>String fullPass</code>: the trail, a hyphen, then the destination. For the starter route, this is <code>cedar-waterfall</code>. Your code must also work for <code>oak:cove#east</code>, producing <code>oak-cove</code>.</p>`,checks:[
+    ['Extract trail before the colon', /String\s+trail\s*=\s*route\s*\.\s*substring\s*\(\s*0\s*,\s*colonIndex\s*\)\s*;/],
+    ['Extract destination between : and #', /String\s+destination\s*=\s*route\s*\.\s*substring\s*\(\s*colonIndex\s*\+\s*1\s*,\s*hashIndex\s*\)\s*;/],
+    ['Build fullPass from extracted names', /String\s+fullPass\s*=\s*trail\s*\+\s*"-"\s*\+\s*destination\s*;/]
+  ]},
+  {title:'Short Trail Pass',subtitle:'first character · exclusive end',body:`<p>Use <code>substring</code> to extract <code>String initial</code>, the first character of <code>trail</code> (or <code>route</code>).</p><p>Create <code>String shortPass</code> from the initial, a hyphen, and the destination. Expected example: <code>c-waterfall</code>.</p><p>Remember: the second substring index is exclusive.</p>`,checks:[
+    ['Extract the first character with substring', /String\s+initial\s*=\s*(?:trail|route)\s*\.\s*substring\s*\(\s*0\s*,\s*1\s*\)\s*;/],
+    ['Build shortPass from initial and destination', /String\s+shortPass\s*=\s*initial\s*\+\s*"-"\s*\+\s*destination\s*;/]
+  ]},
+  {title:'Safe Random Positions',subtitle:'Math.random · integer ranges',body:`<p>Choose <code>int trailIndex</code> for any character in <code>trail</code>: from <code>0</code> through <code>trail.length() - 1</code>.</p><p>Choose <code>int destinationIndex</code> for the start of a three-character destination slice: from <code>0</code> through <code>destination.length() - 3</code>.</p><p>Use <code>Math.random()</code>, scale by the number of valid positions, then cast the entire product to <code>int</code>. What happens when the destination has exactly three characters?</p>`,checks:[
+    trailCheck('Choose trailIndex using all trail characters', String.raw`int\s+trailIndex\s*=\s*\(\s*int\s*\)\s*\(\s*(?:Math\s*\.\s*random\s*\(\s*\)\s*\*\s*trail\s*\.\s*length\s*\(\s*\)|trail\s*\.\s*length\s*\(\s*\)\s*\*\s*Math\s*\.\s*random\s*\(\s*\))\s*\)\s*;`),
+    trailCheck('Choose a safe destinationIndex for a three-character slice', String.raw`int\s+destinationIndex\s*=\s*\(\s*int\s*\)\s*\(\s*(?:Math\s*\.\s*random\s*\(\s*\)\s*\*\s*\(\s*destination\s*\.\s*length\s*\(\s*\)\s*-\s*2\s*\)|\(\s*destination\s*\.\s*length\s*\(\s*\)\s*-\s*2\s*\)\s*\*\s*Math\s*\.\s*random\s*\(\s*\))\s*\)\s*;`)
+  ]},
+  {title:'Mystery Trail Pass',subtitle:'random slices · combine results',body:`<p>Use your random positions to extract <code>String trailLetter</code> (one character) and <code>String destinationPart</code> (three consecutive characters).</p><p>Combine them with a hyphen in <code>String mysteryPass</code>. Possible examples include <code>d-ter</code> and <code>r-all</code> for the starter route.</p><p>Print <code>fullPass</code>, <code>shortPass</code>, and <code>mysteryPass</code> on separate lines using <code>System.out.println</code>. Keep all previous code in Main.java.</p>`,checks:[
+    ['Extract one random trail character', /String\s+trailLetter\s*=\s*trail\s*\.\s*substring\s*\(\s*trailIndex\s*,\s*trailIndex\s*\+\s*1\s*\)\s*;/],
+    ['Extract three consecutive destination characters', /String\s+destinationPart\s*=\s*destination\s*\.\s*substring\s*\(\s*destinationIndex\s*,\s*destinationIndex\s*\+\s*3\s*\)\s*;/],
+    ['Build mysteryPass from both random slices', /String\s+mysteryPass\s*=\s*trailLetter\s*\+\s*"-"\s*\+\s*destinationPart\s*;/],
+    ...['fullPass','shortPass','mysteryPass'].map(name=>trailCheck(`Print ${name}`, String.raw`System\s*\.\s*out\s*\.\s*println\s*\(\s*${name}\s*\)\s*;`))
+  ]}
+];
+const LABS = {
+  fashion:{title:'Fashion Item Java Lab',subtitle:'Objects · Constructors · Arguments · Methods',starter:STARTER,challenges:CHALLENGES,prefix:'FashionLab'},
+  trail:{title:'Trail Pass Java Lab',subtitle:'Strings · Substrings · Random Numbers · Concatenation',starter:TRAIL_STARTER,challenges:TRAIL_CHALLENGES,prefix:'TrailLab'}
+};
+let activeLab = 'fashion';
+const lab = () => LABS[activeLab];
+
 const $ = id => document.getElementById(id);
 let state = null;
 let openFile = 'main';
 let saveTimer;
-const storageKey = id => `fashionLab_${id}`;
+const storageKey = id => activeLab==='fashion'?`fashionLab_${id}`:`trailLab_${id}`;
 const teacherSubmissionsKey = 'fashionLab_teacherSubmissions';
 const cleanId = id => id.trim().replace(/\s+/g, ' ');
-const blankProgress = () => ({challenge1:false,challenge2:false,challenge3:false,challenge4:false});
-function freshState(name,id){return {student:{name,id},code:STARTER,currentChallenge:0,progress:blankProgress(),score:0,checkResults:{}};}
+const blankProgress = () => Object.fromEntries(lab().challenges.map((_,i)=>['challenge'+(i+1),false]));
+function freshState(name,id){return {student:{name,id},code:lab().starter,currentChallenge:0,progress:blankProgress(),score:0,checkResults:{}};}
 function normalizeState(value,name,id){
   const base=freshState(name,id); if(!value||typeof value!=='object')return base;
   base.student={name:name||value.student?.name||'',id};
-  base.code=typeof value.code==='string'?value.code:(typeof value.mainJava==='string'?value.mainJava:STARTER);
-  base.currentChallenge=Math.min(3,Math.max(0,Number(value.currentChallenge)||0));
-  base.progress={...base.progress,...value.progress}; base.score=Object.values(base.progress).filter(Boolean).length;
+  base.code=typeof value.code==='string'?value.code:(typeof value.mainJava==='string'?value.mainJava:lab().starter);
+  base.currentChallenge=Math.min(lab().challenges.length-1,Math.max(0,Number(value.currentChallenge)||0));
+  for(const key of Object.keys(base.progress))base.progress[key]=value.progress?.[key]===true; base.score=Object.values(base.progress).filter(Boolean).length;
   base.checkResults=value.checkResults&&typeof value.checkResults==='object'?value.checkResults:{}; return base;
 }
 function save(){if(!state)return;state.score=Object.values(state.progress).filter(Boolean).length;localStorage.setItem(storageKey(state.student.id),JSON.stringify(state));$('saveStatus').textContent='Saved locally ✓';updateProgress();}
 function login(name,id){
-  id=cleanId(id); name=name.trim(); if(!name||!id)throw new Error('Please enter both your name and Student ID.');
+  activeLab='fashion'; id=cleanId(id); name=name.trim(); if(!name||!id)throw new Error('Please enter both your name and Student ID.');
   let stored=null; try{stored=JSON.parse(localStorage.getItem(storageKey(id)));}catch(_){/* replace malformed local data */}
   state=normalizeState(stored,name,id); save(); sessionStorage.setItem('fashionLab_currentStudent',id); showLabSelect();
 }
-function hideStudentViews(){$('loginView').classList.add('hidden');$('labSelectView').classList.add('hidden');$('labView').classList.add('hidden');$('lab2View').classList.add('hidden');}
+function hideStudentViews(){$('loginView').classList.add('hidden');$('labSelectView').classList.add('hidden');$('labView').classList.add('hidden');}
 function showLabSelect(){hideStudentViews();$('selectStudentBadge').textContent=`${state.student.name} · ${state.student.id}`;$('labSelectView').classList.remove('hidden');}
+function openLab(id){
+  clearTimeout(saveTimer);save();const student=state.student;activeLab=id;
+  let stored=null;try{stored=JSON.parse(localStorage.getItem(storageKey(student.id)));}catch(_){}
+  state=normalizeState(stored,student.name,student.id);showLab();
+}
 function showLab(){
+  $('labTitle').textContent=lab().title;$('labSubtitle').textContent=lab().subtitle;
+  $('fashionReference').classList.toggle('hidden',activeLab!=='fashion');
+  $('trailReference').classList.toggle('hidden',activeLab!=='trail');
+  document.querySelectorAll('#fileTabs [data-file]:not([data-file="main"])').forEach(b=>b.classList.toggle('hidden',activeLab!=='fashion'));
   hideStudentViews();$('labView').classList.remove('hidden');$('studentBadge').textContent=`${state.student.name} · ${state.student.id}`;$('endpoint').value=localStorage.getItem('judge0Endpoint')||'';selectChallenge(state.currentChallenge);selectFile('main');
 }
-function showLab2(){hideStudentViews();$('lab2View').classList.remove('hidden');}
+
 function logout(){clearTimeout(saveTimer);save();state=null;sessionStorage.removeItem('fashionLab_currentStudent');hideStudentViews();$('loginView').classList.remove('hidden');$('loginForm').reset();$('studentName').focus();}
 function updateProgress(){
-  if(!state)return;$('challengeList').innerHTML=CHALLENGES.map((c,i)=>`<button class="challenge ${i===state.currentChallenge?'active':''} ${state.progress['challenge'+(i+1)]?'complete':''}" data-challenge="${i}"><span class="progress-icon">${state.progress['challenge'+(i+1)]?'✓':'○'}</span><span><b>Challenge ${i+1}</b><small>${c.title}</small></span><span>›</span></button>`).join('');$('topScore').textContent=`Score: ${state.score} / 4`;
+  if(!state)return;$('challengeList').innerHTML=lab().challenges.map((c,i)=>`<button class="challenge ${i===state.currentChallenge?'active':''} ${state.progress['challenge'+(i+1)]?'complete':''}" data-challenge="${i}"><span class="progress-icon">${state.progress['challenge'+(i+1)]?'✓':'○'}</span><span><b>Challenge ${i+1}</b><small>${c.title}</small></span><span>›</span></button>`).join('');$('topScore').textContent=`Score: ${state.score} / ${lab().challenges.length}`;
 }
-function selectChallenge(index){state.currentChallenge=index;const c=CHALLENGES[index];$('challengeNumber').textContent=`Challenge ${index+1} of 4`;$('taskTitle').textContent=c.title;$('taskBody').innerHTML=c.body;$('feedback').innerHTML='';$('console').textContent='Ready. Continue editing the same Main.java.';save();}
+function selectChallenge(index){state.currentChallenge=index;const c=lab().challenges[index];$('challengeNumber').textContent=`Challenge ${index+1} of ${lab().challenges.length}`;$('taskTitle').textContent=c.title;$('taskBody').innerHTML=c.body;$('feedback').innerHTML='';$('console').textContent='Ready. Continue editing the same Main.java.';save();}
 function selectFile(file){openFile=file;document.querySelectorAll('#fileTabs button').forEach(b=>b.classList.toggle('active',b.dataset.file===file));$('editor').value=file==='main'?state.code:(file==='fashion'?FASHION_ITEM:CALCULATOR);$('editor').readOnly=file!=='main';$('saveStatus').textContent=file==='main'?'Saved locally ✓':'Teacher-provided · read only';}
 function withoutComments(code){
   let result='',mode='code';
@@ -101,26 +152,26 @@ function withoutComments(code){
   return result;
 }
 function checkAnswer(){
-  const code=withoutComments(state.code);const results=CHALLENGES[state.currentChallenge].checks.map(([label,re])=>({label,passed:re.test(code)}));const all=results.every(r=>r.passed);state.checkResults['challenge'+(state.currentChallenge+1)]={passed:all,checkedAt:new Date().toISOString(),items:results};if(all)state.progress['challenge'+(state.currentChallenge+1)]=true;save();$('feedback').innerHTML=results.map(r=>`<div class="check ${r.passed?'ok':'bad'}">${r.passed?'✓':'✗'} ${r.label}</div>`).join('')+`<div class="check ${all?'ok':'bad'}"><b>${all?'✓ Challenge complete!':'Almost there — use the required Java structure and fix the items above.'}</b></div>`;
+  const code=withoutComments(state.code);const results=lab().challenges[state.currentChallenge].checks.map(([label,re])=>({label,passed:re.test(code)}));const all=results.every(r=>r.passed);state.checkResults['challenge'+(state.currentChallenge+1)]={passed:all,checkedAt:new Date().toISOString(),items:results};if(all)state.progress['challenge'+(state.currentChallenge+1)]=true;save();$('feedback').innerHTML=results.map(r=>`<div class="check ${r.passed?'ok':'bad'}">${r.passed?'✓':'✗'} ${r.label}</div>`).join('')+`<div class="check ${all?'ok':'bad'}"><b>${all?'✓ Challenge complete!':'Almost there — use the required Java structure and fix the items above.'}</b></div>`;
 }
 function saveForTeacher(output){
   let submissions=[];
   try{const stored=JSON.parse(localStorage.getItem(teacherSubmissionsKey));if(Array.isArray(stored))submissions=stored;}catch(_){/* replace malformed teacher data */}
-  const existing=submissions.findIndex(item=>item?.student?.id===output.student.id);
+  const existing=submissions.findIndex(item=>item?.student?.id===output.student.id&&(item.labId||'fashion')===output.labId);
   if(existing>=0)submissions.splice(existing,1,output);else submissions.push(output);
   localStorage.setItem(teacherSubmissionsKey,JSON.stringify(submissions));
 }
-function exportAssignment(){save();const output={version:'1.0',student:state.student,score:state.score,progress:state.progress,mainJava:state.code,checkResults:state.checkResults,submittedAt:new Date().toISOString()};try{saveForTeacher(output);$('console').textContent='Assignment exported and added to the Teacher Dashboard on this browser.';}catch(error){$('console').textContent=`The JSON was downloaded, but could not be saved to the Teacher Dashboard: ${error.message}`;}const blob=new Blob([JSON.stringify(output,null,2)],{type:'application/json'});const url=URL.createObjectURL(blob);const a=document.createElement('a');const safeName=state.student.name.trim().replace(/[^a-z0-9]+/gi,'_').replace(/^_|_$/g,'');const safeId=state.student.id.replace(/[^a-z0-9_-]/gi,'_');a.href=url;a.download=`FashionLab_${safeId}_${safeName||'Student'}.json`;a.click();setTimeout(()=>URL.revokeObjectURL(url),0);}
-async function runCode(){const ep=(localStorage.getItem('judge0Endpoint')||'').trim();const con=$('console');if(!ep){con.textContent='Java Runner is not configured yet.\n\nYou can still use Check Answer to complete this activity.';return;}con.textContent='Compiling and running…';try{const sep=ep.includes('?')?'&':'?';const dependencies=[FASHION_ITEM,CALCULATOR].map(code=>code.replace('public class','class'));const res=await fetch(ep+sep+'base64_encoded=false&wait=true',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({source_code:[state.code,...dependencies].join('\n\n'),language_id:62,stdin:''})});if(!res.ok)throw new Error(`Runner returned HTTP ${res.status}`);const data=await res.json();con.textContent=data.stdout||data.compile_output||data.stderr||data.message||JSON.stringify(data,null,2);}catch(error){con.textContent=`Java Runner error: ${error.message}\n\nCheck the endpoint and CORS settings. Check Answer remains available.`;}}
+function exportAssignment(){save();const output={version:'2.0',labId:activeLab,labTitle:lab().title,maxScore:lab().challenges.length,student:state.student,score:state.score,progress:state.progress,mainJava:state.code,checkResults:state.checkResults,submittedAt:new Date().toISOString()};try{saveForTeacher(output);$('console').textContent='Assignment exported and added to the Teacher Dashboard on this browser.';}catch(error){$('console').textContent=`The JSON was downloaded, but could not be saved to the Teacher Dashboard: ${error.message}`;}const blob=new Blob([JSON.stringify(output,null,2)],{type:'application/json'});const url=URL.createObjectURL(blob);const a=document.createElement('a');const safeName=state.student.name.trim().replace(/[^a-z0-9]+/gi,'_').replace(/^_|_$/g,'');const safeId=state.student.id.replace(/[^a-z0-9_-]/gi,'_');a.href=url;a.download=`${lab().prefix}_${safeId}_${safeName||'Student'}.json`;a.click();setTimeout(()=>URL.revokeObjectURL(url),0);}
+async function runCode(){const ep=(localStorage.getItem('judge0Endpoint')||'').trim();const con=$('console');if(!ep){con.textContent='Java Runner is not configured yet.\n\nYou can still use Check Answer to complete this activity.';return;}con.textContent='Compiling and running…';try{const sep=ep.includes('?')?'&':'?';const dependencies=(activeLab==='fashion'?[FASHION_ITEM,CALCULATOR]:[]).map(code=>code.replace('public class','class'));const res=await fetch(ep+sep+'base64_encoded=false&wait=true',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({source_code:[state.code,...dependencies].join('\n\n'),language_id:62,stdin:''})});if(!res.ok)throw new Error(`Runner returned HTTP ${res.status}`);const data=await res.json();con.textContent=data.stdout||data.compile_output||data.stderr||data.message||JSON.stringify(data,null,2);}catch(error){con.textContent=`Java Runner error: ${error.message}\n\nCheck the endpoint and CORS settings. Check Answer remains available.`;}}
 
 $('loginForm').addEventListener('submit',e=>{e.preventDefault();try{$('loginError').textContent='';login($('studentName').value,$('studentId').value);}catch(error){$('loginError').textContent=error.message;}});
 $('challengeList').addEventListener('click',e=>{const button=e.target.closest('[data-challenge]');if(button)selectChallenge(Number(button.dataset.challenge));});
 $('fileTabs').addEventListener('click',e=>{const button=e.target.closest('[data-file]');if(button)selectFile(button.dataset.file);});
 $('editor').addEventListener('input',()=>{if(openFile!=='main')return;state.code=$('editor').value;$('saveStatus').textContent='Saving…';clearTimeout(saveTimer);saveTimer=setTimeout(save,650);});
 $('checkBtn').addEventListener('click',checkAnswer);$('runBtn').addEventListener('click',runCode);$('exportBtn').addEventListener('click',exportAssignment);$('logoutBtn').addEventListener('click',logout);
-$('lab1Btn').addEventListener('click',showLab);$('lab2Btn').addEventListener('click',showLab2);$('chooseLabBtn').addEventListener('click',showLabSelect);$('lab2BackBtn').addEventListener('click',showLabSelect);$('selectLogoutBtn').addEventListener('click',logout);
+$('lab1Btn').addEventListener('click',()=>openLab('fashion'));$('lab2Btn').addEventListener('click',()=>openLab('trail'));$('chooseLabBtn').addEventListener('click',showLabSelect);$('selectLogoutBtn').addEventListener('click',logout);
 $('resetBtn').addEventListener('click',()=>{if(!confirm('Are you sure?\n\nThis will delete your saved code and challenge progress on this device.'))return;localStorage.removeItem(storageKey(state.student.id));state=freshState(state.student.name,state.student.id);save();selectFile('main');selectChallenge(0);});
 $('saveEndpoint').addEventListener('click',()=>{localStorage.setItem('judge0Endpoint',$('endpoint').value.trim());$('console').textContent='Java Runner endpoint saved on this browser.';});
 window.addEventListener('beforeunload',()=>{if(state)save();});
 
-const remembered=sessionStorage.getItem('fashionLab_currentStudent');if(remembered){try{const stored=JSON.parse(localStorage.getItem(storageKey(remembered)));if(stored?.student){state=normalizeState(stored,stored.student.name,remembered);showLabSelect();}}catch(_){sessionStorage.removeItem('fashionLab_currentStudent');}}
+const remembered=sessionStorage.getItem('fashionLab_currentStudent');if(remembered){activeLab='fashion';try{const stored=JSON.parse(localStorage.getItem(storageKey(remembered)));if(stored?.student){state=normalizeState(stored,stored.student.name,remembered);showLabSelect();}}catch(_){sessionStorage.removeItem('fashionLab_currentStudent');}}

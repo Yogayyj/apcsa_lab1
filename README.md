@@ -1,15 +1,15 @@
-# Fashion Item Java Lab
+# AP CSA Java Labs
 
 A build-free, GitHub Pages-ready AP Computer Science A lab about classes, objects, constructors, parameters and arguments, instance methods, and static methods. It uses only HTML, CSS, JavaScript, browser storage, and local JSON files.
 
 ## Student workflow
 
 1. Open `index.html`, enter a name and Student ID, and select **Start Lab**.
-2. Choose **Lab 1 · Fashion Java Lab** from the lab selection screen. A **Lab 2** placeholder is also available for future content.
-3. Complete the four challenges in order. Every challenge uses the same cumulative `Main.java`; changing challenges never replaces the code.
-4. Use **Check Answer** for concept-focused structural feedback. A challenge counts toward the score only after every check passes.
-5. Work auto-saves under `fashionLab_<StudentID>`. **Logout** preserves it; entering the same ID restores it. Different IDs have independent work.
-6. Select **Export Assignment** to download `FashionLab_StudentID_Student_Name.json` and automatically add/update the submission in the Teacher Dashboard when it is opened in the same browser.
+2. Choose **Lab 1 · Fashion Java Lab** from the lab selection screen. **Lab 2 · Trail Pass Java Lab** practices string parsing, substring boundaries, concatenation, and safe random indices in five cumulative checkpoints.
+3. Complete the selected lab’s checkpoints in order. Every challenge uses the same cumulative `Main.java`; changing challenges never replaces the code.
+4. Use **Check Answer** for concept-focused structural feedback. A checkpoint counts toward the score only after every check passes (Lab 1: /4, Lab 2: /5).
+5. Work auto-saves under `fashionLab_<StudentID>` for Lab 1 and `trailLab_<StudentID>` for Lab 2. **Logout** preserves it; entering the same ID restores it. Different IDs have independent work.
+6. Select **Export Assignment** to download a lab-specific `FashionLab_StudentID_Student_Name.json` or `TrailLab_StudentID_Student_Name.json` and automatically add/update the submission in the Teacher Dashboard when it is opened in the same browser.
 
 **Reset My Lab** permanently deletes only the signed-in student's saved code and progress after confirmation.
 
@@ -17,7 +17,7 @@ A build-free, GitHub Pages-ready AP Computer Science A lab about classes, object
 
 1. Open `teacher.html` and enter the teacher password `88888888`. Assignments exported from the Student Lab in the same browser appear automatically.
 2. For assignments from other browsers or devices, select or drag in one or many exported `.json` files.
-3. Review the class table, then select a student to inspect progress, submission time, and final `Main.java`.
+3. Submissions are identified by both Student ID and lab; legacy exports are treated as Lab 1. Review the class table, then select a student to inspect progress, submission time, and final `Main.java`.
 
 Files are parsed locally with browser APIs. Dashboard submissions are retained in local storage across refreshes and browser restarts until **Clear list** is confirmed. Nothing is uploaded to a server.
 
@@ -61,3 +61,9 @@ Alternatively, choose **Deploy from a branch**, select the repository's default 
 - Optional Judge0-compatible Run Code
 - JSON export and multi-file teacher import (including drag and drop)
 - Relative assets suitable for GitHub Pages project sites
+
+## Lab 2 · Trail Pass
+
+Adapted from the supplied Unit 1 FRQ skills with a new park-kiosk scenario. Parse `trail:destination#zone` (for example `cedar:waterfall#north`) and generate full, initial-based, and random trail passes. The five checkpoints cover delimiter positions, extraction and the full pass, an initial-based pass, safe random positions, and random slices plus printing. The destination has at least three characters; the trail is nonempty. The random destination start must include every valid three-character slice, including the final one.
+
+Check Answer provides structural feedback with the task’s named variables, not compilation or proof of correctness for arbitrary Java. Code, scores, reset, exports, and teacher review are independent for each lab. Optional Run Code submits only Main.java for Lab 2.
