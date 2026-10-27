@@ -67,3 +67,11 @@ Alternatively, choose **Deploy from a branch**, select the repository's default 
 Adapted from the supplied Unit 1 FRQ skills with a new park-kiosk scenario. Parse `trail:destination#zone` (for example `cedar:waterfall#north`) and generate full and initial-based trail passes, then print a random number from 1 through the trail name’s length. The four checkpoints cover delimiter positions, extraction and the full pass, an initial-based pass, and a simple length/Math.random task with a worked example. Chinese question translations appear in the left panel. Trail and destination names are nonempty. Existing five-checkpoint exports remain readable; saved student code and the first three checkpoints are preserved, while the changed fourth checkpoint must be checked again.
 
 Check Answer provides structural feedback with the task’s named variables, not compilation or proof of correctness for arbitrary Java. Code, scores, reset, exports, and teacher review are independent for each lab. Optional Run Code submits only Main.java for Lab 2.
+
+## Lab 3 · Robot Mission
+
+Choose **Lab 3 · Robot Mission Java Lab** on the lab selection page. This new scenario applies the boolean/String skills from the supplied bead-sequence FRQ to classroom robot instructions: 4–8 instructions inclusive, contains both S (scan) and C (charge), and matching first/last instructions. Assume nonempty input using only S, C, F, L, R.
+
+Four cumulative checkpoints (/4) cover inclusive comparisons with `&&`, `indexOf` presence checks, `substring` with `.equals`, and an `if / else` combining three boolean variables. Each task includes a beginner example and a Chinese translation in the left panel. The right panel includes rule-by-rule test cases and expected messages. Use the named variables and demonstrated structures for Check Answer; it provides structural feedback rather than executing arbitrary Java. Optional Run Code submits only Main.java.
+
+Lab 3 saves independently under `robotLab_<StudentID>` and exports `RobotLab_StudentID_Student_Name.json`. Teacher review supports all three labs without overwriting another lab’s submission for the same student. Existing Lab 1 and Lab 2 records remain compatible.

@@ -87,8 +87,9 @@ const TRAIL_TRANSLATIONS = [
 ];
 
 const LABS = {
+  robot:{title:'Robot Mission Java Lab',subtitle:'Booleans · Comparisons · && · if / else',starter:ROBOT_STARTER,challenges:ROBOT_CHALLENGES,translations:ROBOT_TRANSLATIONS,prefix:'RobotLab'},
   fashion:{title:'Fashion Item Java Lab',subtitle:'Objects · Constructors · Arguments · Methods',starter:STARTER,challenges:CHALLENGES,prefix:'FashionLab'},
-  trail:{title:'Trail Pass Java Lab',subtitle:'Strings · Substrings · Random Numbers · Concatenation',starter:TRAIL_STARTER,challenges:TRAIL_CHALLENGES,prefix:'TrailLab'}
+  trail:{title:'Trail Pass Java Lab',subtitle:'Strings · Substrings · Random Numbers · Concatenation',starter:TRAIL_STARTER,challenges:TRAIL_CHALLENGES,prefix:'TrailLab',translations:TRAIL_TRANSLATIONS}
 };
 let activeLab = 'fashion';
 const lab = () => LABS[activeLab];
@@ -97,7 +98,7 @@ const $ = id => document.getElementById(id);
 let state = null;
 let openFile = 'main';
 let saveTimer;
-const storageKey = id => activeLab==='fashion'?`fashionLab_${id}`:`trailLab_${id}`;
+const storageKey = id => `${{fashion:'fashionLab',trail:'trailLab',robot:'robotLab'}[activeLab]}_${id}`;
 const teacherSubmissionsKey = 'fashionLab_teacherSubmissions';
 const cleanId = id => id.trim().replace(/\s+/g, ' ');
 const blankProgress = () => Object.fromEntries(lab().challenges.map((_,i)=>['challenge'+(i+1),false]));
@@ -130,6 +131,7 @@ function showLab(){
   $('labTitle').textContent=lab().title;$('labSubtitle').textContent=lab().subtitle;
   $('fashionReference').classList.toggle('hidden',activeLab!=='fashion');
   $('trailReference').classList.toggle('hidden',activeLab!=='trail');
+  $('robotReference').classList.toggle('hidden',activeLab!=='robot');
   document.querySelectorAll('#fileTabs [data-file]:not([data-file="main"])').forEach(b=>b.classList.toggle('hidden',activeLab!=='fashion'));
   hideStudentViews();$('labView').classList.remove('hidden');$('studentBadge').textContent=`${state.student.name} · ${state.student.id}`;$('endpoint').value=localStorage.getItem('judge0Endpoint')||'';selectChallenge(state.currentChallenge);selectFile('main');
 }
@@ -138,7 +140,7 @@ function logout(){clearTimeout(saveTimer);save();state=null;sessionStorage.remov
 function updateProgress(){
   if(!state)return;$('challengeList').innerHTML=lab().challenges.map((c,i)=>`<button class="challenge ${i===state.currentChallenge?'active':''} ${state.progress['challenge'+(i+1)]?'complete':''}" data-challenge="${i}"><span class="progress-icon">${state.progress['challenge'+(i+1)]?'✓':'○'}</span><span><b>Challenge ${i+1}</b><small>${c.title}</small></span><span>›</span></button>`).join('');$('topScore').textContent=`Score: ${state.score} / ${lab().challenges.length}`;
 }
-function selectChallenge(index){state.currentChallenge=index;const c=lab().challenges[index];$('challengeNumber').textContent=`Challenge ${index+1} of ${lab().challenges.length}`;$('taskTitle').textContent=c.title;$('taskBody').innerHTML=c.body;$('translationCard').classList.toggle('hidden',activeLab!=='trail');$('taskTranslation').innerHTML=activeLab==='trail'?TRAIL_TRANSLATIONS[index]:'';$('feedback').innerHTML='';$('console').textContent='Ready. Continue editing the same Main.java.';save();}
+function selectChallenge(index){state.currentChallenge=index;const c=lab().challenges[index];$('challengeNumber').textContent=`Challenge ${index+1} of ${lab().challenges.length}`;$('taskTitle').textContent=c.title;$('taskBody').innerHTML=c.body;$('translationCard').classList.toggle('hidden',!lab().translations);$('taskTranslation').innerHTML=lab().translations?.[index]||'';$('feedback').innerHTML='';$('console').textContent='Ready. Continue editing the same Main.java.';save();}
 function selectFile(file){openFile=file;document.querySelectorAll('#fileTabs button').forEach(b=>b.classList.toggle('active',b.dataset.file===file));$('editor').value=file==='main'?state.code:(file==='fashion'?FASHION_ITEM:CALCULATOR);$('editor').readOnly=file!=='main';$('saveStatus').textContent=file==='main'?'Saved locally ✓':'Teacher-provided · read only';}
 function withoutComments(code){
   let result='',mode='code';
@@ -176,6 +178,7 @@ $('challengeList').addEventListener('click',e=>{const button=e.target.closest('[
 $('fileTabs').addEventListener('click',e=>{const button=e.target.closest('[data-file]');if(button)selectFile(button.dataset.file);});
 $('editor').addEventListener('input',()=>{if(openFile!=='main')return;state.code=$('editor').value;$('saveStatus').textContent='Saving…';clearTimeout(saveTimer);saveTimer=setTimeout(save,650);});
 $('checkBtn').addEventListener('click',checkAnswer);$('runBtn').addEventListener('click',runCode);$('exportBtn').addEventListener('click',exportAssignment);$('logoutBtn').addEventListener('click',logout);
+$('lab3Btn').addEventListener('click',()=>openLab('robot'));
 $('lab1Btn').addEventListener('click',()=>openLab('fashion'));$('lab2Btn').addEventListener('click',()=>openLab('trail'));$('chooseLabBtn').addEventListener('click',showLabSelect);$('selectLogoutBtn').addEventListener('click',logout);
 $('resetBtn').addEventListener('click',()=>{if(!confirm('Are you sure?\n\nThis will delete your saved code and challenge progress on this device.'))return;localStorage.removeItem(storageKey(state.student.id));state=freshState(state.student.name,state.student.id);save();selectFile('main');selectChallenge(0);});
 $('saveEndpoint').addEventListener('click',()=>{localStorage.setItem('judge0Endpoint',$('endpoint').value.trim());$('console').textContent='Java Runner endpoint saved on this browser.';});
